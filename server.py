@@ -7,7 +7,7 @@ Clase (y programa principal) para un servidor de eco en UDP simple
 import socketserver
 
 
-class EchoHandler(socketserver.DatagramRequestHandler):
+class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     """
     Echo server class
     """
