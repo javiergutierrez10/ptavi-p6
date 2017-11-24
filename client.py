@@ -23,12 +23,23 @@ LINE = METHOD + " sip:" + SIPNAME_SERVER + "@" + IP_SERVER + " SIP/2.0\r\n"
 with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
     my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     my_socket.connect((IP_SERVER, PUERTO_SERVER))
-
+    
+    print()
     print("Enviando: " + LINE)
     my_socket.send(bytes(LINE, 'utf-8') + b'\r\n')
+
     data = my_socket.recv(1024)
 
-    print('Recibido -- ', data.decode('utf-8'))
-    print("Terminando socket...")
+    print("Recibido:", data.decode('utf-8'))
+
+    if METHOD == "INVITE":
+        METHOD = "ACK"
+        LINE = METHOD + " sip:" + SIPNAME_SERVER + "@" + IP_SERVER + " SIP/2.0\r\n"
+        my_socket.send(bytes(LINE, 'utf-8') + b'\r\n')
+        print("Enviando: " + LINE)
+        
+
+print("Terminando...")
+    
 
 print("Fin.")
