@@ -8,7 +8,8 @@ import socketserver
 import sys
 import os
 
-class SIPRegisterHandler(socketserver.DatagramRequestHandler):
+
+class EchoHandler(socketserver.DatagramRequestHandler):
     """
     Echo server class
     """
@@ -25,7 +26,9 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 self.wfile.write(b"SIP/2.0 180 Ringing\r\n")
                 self.wfile.write(b"SIP/2.0 200 OK\r\n")
             elif method == "ACK":
-                self.wfile.write(b"ACK RECIBIDO\r\n")
+                aEjecutar = "mp32rtp -i 27.0.0.1 -p 23032 < " + fichero_audio
+                print("Vamos a ejecutar", aEjecutar)
+                os.system(aEjecutar)
             else:
                 self.wfile.write(b"SIP/2.0 200 OK\r\n")
         elif method not in methods:
@@ -48,10 +51,11 @@ if __name__ == "__main__":
         if not os.path.isfile(fichero_audio):
             sys.exit("No se encuentra el fichero de audio: " + fichero_audio)
         else:
-            serv = socketserver.UDPServer((sys.argv[1], int(sys.argv[2])), SIPRegisterHandler)
+            IP = sys.argv[1]
+            PUERTO = int(sys.argv[2])
+            serv = socketserver.UDPServer((IP, PUERTO), EchoHandler)
     except IndexError:
         sys.exit("Usage: python3 server.py IP puerto fichero_audio")
-    
+
     print("Listening...")
     serv.serve_forever()
-
