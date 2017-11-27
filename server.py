@@ -26,7 +26,7 @@ class EchoHandler(socketserver.DatagramRequestHandler):
                 self.wfile.write(b"SIP/2.0 180 Ringing\r\n")
                 self.wfile.write(b"SIP/2.0 200 OK\r\n")
             elif method == "ACK":
-                aEjecutar = "mp32rtp -i 27.0.0.1 -p 23032 < " + fichero_audio
+                aEjecutar = "mp32rtp -i 127.0.0.1 -p 23032 < " + fichero_audio
                 print("Vamos a ejecutar", aEjecutar)
                 os.system(aEjecutar)
             else:
